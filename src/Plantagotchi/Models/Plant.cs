@@ -13,7 +13,7 @@ namespace Plantagotchi.Models
         public DateTime LastWatered { get; set; }
         public DateTime LastSunLight { get; set;}
         public int Health { get; set;}
-
+        public bool IsAlive { get; set;}
         // constructor
         public Plant(String name)
         {
@@ -23,6 +23,7 @@ namespace Plantagotchi.Models
             LastWatered = DateTime.UtcNow;
             LastSunLight = DateTime.UtcNow;
             Health = 100;
+            IsAlive = true;
         }
     }
 }

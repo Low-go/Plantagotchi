@@ -51,7 +51,21 @@ namespace Plantagotchi.Controllers
         public ActionResult<Plant> GetPlantById(Guid id)
         {
             string path = "Data/plants.json";
-            Plant userPlant = JsonSerializer.Deserialize<Plant>(System.IO.File.ReadAllText(path)); // json deserizlied and stored as a class/object
+            List<Plant> plants = JsonSerializer.Deserialize<List<Plant>>(System.IO.File.ReadAllText(path)); // json deserizlied and stored as a List
+            Plant userPlant = null;
+
+            foreach (Plant plant in plants)
+            {
+                if (plant.Id == id)
+                {
+                    userPlant = plant;
+                }
+            }
+
+            if (userPlant == null)
+            {
+                return NoContent(); // plant not found get out
+            }
 
             // lets try this
             DateTime timeNow = DateTime.UtcNow;

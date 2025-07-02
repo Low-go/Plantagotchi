@@ -106,9 +106,70 @@ namespace Plantagotchi.Controllers
         }
 
 
-        // Update placeholder 
-        //
-        //
+        // Update water
+        [HttpPut("{id}/water")]
+        public ActionResult<Plant> WaterPlant(Guid id)
+        {
+            string path = "Data/plants.json";
+            List<Plant> plants = JsonSerializer.Deserialize<List<Plant>>(System.IO.File.ReadAllText(path));
+
+            foreach (Plant plant in plants)
+            {
+                if (plant.Id == id)
+                {
+                    plant.LastWatered = DateTime.UtcNow;
+                    string json = JsonSerializer.Serialize(plants); // back into json
+                    System.IO.File.WriteAllText(path, json);
+                    return Ok(plant);
+                }
+            }
+
+            return NotFound();
+        }
+
+        //update sunlight
+        [HttpPut("{id}/sunlight")]
+        public ActionResult<Plant> GiveSunLight(Guid id)
+        {
+            string path = "Data/plants.json";
+            List<Plant> plants = JsonSerializer.Deserialize<List<Plant>>(System.IO.File.ReadAllText(path));
+
+            foreach (Plant plant in plants)
+            {
+                if (plant.Id == id)
+                {
+                    plant.LastSunLight = DateTime.UtcNow;
+                    string json = JsonSerializer.Serialize(plants); // back into json
+                    System.IO.File.WriteAllText(path, json);
+                    return Ok(plant);
+                }
+            }
+
+            return NotFound();
+        }
+
+        // for both imedietaly after a get request
+        [HttpPut("{id}/fullUpdate")]
+        public ActionResult<Plant> FullUpdate(Guid id, Plant mainPlant)
+        {
+            string path = "Data/plants.json";
+            List<Plant> plants = JsonSerializer.Deserialize<List<Plant>>(System.IO.File.ReadAllText(path));
+
+            foreach (Plant plant in plants)
+            {
+                if (plant.Id == id)
+                {
+                    plant.LastSunLight = mainPlant.LastSunLight;
+                    plant.LastWatered = mainPlant.LastWatered;
+                    plant.Health = mainPlant.Health;
+                    string json = JsonSerializer.Serialize(plants); // back into json
+                    System.IO.File.WriteAllText(path, json);
+                    return Ok(plant);
+                }
+            }
+
+            return NotFound();
+        }
 
         // Delete
         [HttpDelete("{id}")]

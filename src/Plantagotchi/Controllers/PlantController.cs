@@ -4,6 +4,7 @@ using Plantagotchi.Dto;
 using Plantagotchi.Models;
 using System.Text.Json;
 using System.Collections.Generic;
+using System.Linq;
 
 
 namespace Plantagotchi.Controllers
@@ -28,19 +29,30 @@ namespace Plantagotchi.Controllers
         [HttpPost]
         public ActionResult<Plant> CreatePlant(CreatePlantDto plantDto)
         {
-            // return CreatedAtActionResult(nameof(GetPlantById), new {id = plant.id}, plant);
-
+            
             var newPlant = new Plant(plantDto.Name);
-            var jsonPayLoad = JsonSerializer.Serialize(newPlant);
-            Console.WriteLine(jsonPayLoad);
+            List<Plant> plants;
+            string path = "Data/plants.json";
+
+            // if json is empty create a new list of Plant, append to it, serialize and write it to json
+            try
+            {
+                plants = JsonSerializer.Deserialize<List<Plant>>(System.IO.File.ReadAllText(path));
+            }
+            catch (JsonException) // check if this catch works
+            {
+                plants = new List<Plant>();
+            }
+
+            plants.Add(newPlant);
+
 
 
             // NOTE TO SELF  this overwrites the whole json file
             // if you decide to add more plants in the future you will
             // have to deserialize this and store it
-            string path = "Data/plants.json";
-            System.IO.File.WriteAllText(path, jsonPayLoad);
-
+            string json = JsonSerializer.Serialize(plants);
+            System.IO.File.WriteAllText(path, json);
 
             return Ok(newPlant); // return object?? or just an ok??
         }

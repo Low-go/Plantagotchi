@@ -4,7 +4,6 @@ using Plantagotchi.Dto;
 using Plantagotchi.Models;
 using System.Text.Json;
 using System.Collections.Generic;
-using System.Linq;
 
 
 namespace Plantagotchi.Controllers

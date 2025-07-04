@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Plantagotchi.Dto;
 using Plantagotchi.Models;
@@ -36,8 +37,17 @@ namespace Plantagotchi.Controllers
             var newPlant = _plantService.CreatePlant(plantDto.Name);
             return Ok(newPlant); // return object?? or just an ok??
         }
-        
-        // Read
+
+        // read all of them
+        [HttpGet]
+        public ActionResult<List<Plant>> GetAllPlants()
+        {
+            var plants = _plantService.GetAllPlants();
+            return Ok(plants);
+        }
+
+
+        // Read by id
         [HttpGet("{id}")]
         public ActionResult<Plant> GetPlantById(Guid id)
         {

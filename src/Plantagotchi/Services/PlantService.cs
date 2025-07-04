@@ -15,26 +15,39 @@ namespace Plantagotchi.Services
         public Plant CreatePlant(string name)
         {
             var newPlant = new Plant(name);
-            List<Plant> plants;
+            List<Plant> plants = LoadPlantsFromFile();
 
-            // if json is empty create a new list of Plant, append to it, serialize and write it to json
-            try
+            if (plants.Count >= 3)
             {
-                plants = JsonSerializer.Deserialize<List<Plant>>(File.ReadAllText(_filePath));
-            }
-            catch (JsonException) // check if this catch works
-            {
-                plants = new List<Plant>();
+                return null; // return something else later, no more than 3 plants
             }
 
             plants.Add(newPlant);
-
-            // NOTE TO SELF this overwrites the whole json file
-            // if you decide to add more plants in the future you will
-            // have to deserialize this and store it
             SavePlantsToFile(plants);
 
             return newPlant; // return the new plant object
+        }
+
+        // Get all plants
+        public List<Plant> GetAllPlants()
+        {
+            // need to autocalulcate health
+            List<Plant> plants = LoadPlantsFromFile();
+
+            if (plants.Count == 0) // no plants to show
+            {
+                return plants; // empty list
+            }
+
+            foreach (Plant plant in plants)
+            {
+                CalculateAndUpdateHealth(plant); // update plants health
+            }
+
+
+            SavePlantsToFile(plants);
+            return plants;
+
         }
 
         // Get a plant by ID and calculate its current health

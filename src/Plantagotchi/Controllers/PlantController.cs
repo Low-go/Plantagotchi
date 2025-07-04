@@ -35,6 +35,11 @@ namespace Plantagotchi.Controllers
         public ActionResult<Plant> CreatePlant(CreatePlantDto plantDto)
         {
             var newPlant = _plantService.CreatePlant(plantDto.Name);
+            if (newPlant == null)
+            {
+                return BadRequest("Garden is full! Maximum 3 plants allowed.");
+            }
+            
             return Ok(newPlant); // return object?? or just an ok??
         }
 

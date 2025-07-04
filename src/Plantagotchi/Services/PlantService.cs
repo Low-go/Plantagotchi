@@ -89,6 +89,11 @@ namespace Plantagotchi.Services
             {
                 if (plant.Id == id)
                 {
+                    if (!plant.IsAlive)
+                    {
+                        return plant; // plant is dead
+                    }
+                    
                     plant.LastWatered = DateTime.UtcNow;
                     SavePlantsToFile(plants); // save changes back to json
                     return plant; // return the updated plant
@@ -107,6 +112,11 @@ namespace Plantagotchi.Services
             {
                 if (plant.Id == id)
                 {
+
+                    if (!plant.IsAlive)
+                    {
+                        return plant; // plant is dead
+                    }
                     plant.LastSunLight = DateTime.UtcNow;
                     SavePlantsToFile(plants); // save changes back to json
                     return plant; //return the updated plant

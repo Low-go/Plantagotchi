@@ -39,7 +39,7 @@ namespace Plantagotchi.Controllers
             {
                 return BadRequest("Garden is full! Maximum 3 plants allowed.");
             }
-            
+
             return Ok(newPlant); // return object?? or just an ok??
         }
 
@@ -77,6 +77,11 @@ namespace Plantagotchi.Controllers
             {
                 return NotFound();
             }
+
+            if (!plant.IsAlive)
+            {
+                return BadRequest("Cannot Provide Water to Dead Plant!");
+            }
             
             return Ok(plant);
         }
@@ -90,6 +95,11 @@ namespace Plantagotchi.Controllers
             if (plant == null)
             {
                 return NotFound();
+            }
+
+            if (!plant.IsAlive)
+            {
+                return BadRequest("Cannot Provide Sunlight to Dead Plant!");
             }
             
             return Ok(plant);
